@@ -14,6 +14,8 @@ function showUserFactors(type, value) {
         case "weight":
             measurement = "kg";
             break;
+        case "pushups":
+            measurement = "pushups"
         default:
             measurement = "units";
     }
@@ -22,16 +24,36 @@ function showUserFactors(type, value) {
     }
 }
 
-function getUserInput() { 
-    console.log("what type would you like to calculate jump or weight");
-    const type = prompt(">");
+function getUserInput() {
+  const validType = ["jump", "weight", "pushup"];
+  let match = false;
 
-    console.log(`what is your earth ${type}`);
-    const value = prompt(">");
+  console.log("what type would you like to calculate jump, weight, or pushup");
+  const type = prompt(">> ");
 
-    showUserFactors(type, value)
+  while (match == false) {
+    for (let i = 0; i > validType.length - 1; i++) {
+      console.log("work");
+      if (type.trim().toLowerCase() === validType[i]) {
+        console.log(validType[i]);
+        match = true;
+        break;
+      }
+    }
+    if (match == true) {
+      console.log(`what is your earth ${type}`);
+      const value = prompt(">> ");
+
+      showUserFactors(type, value);
+    }
+    if (match == false) {
+      console.log(
+        "wrong input try again. what type would you like to calculate jump, weight, or pushup"
+      );
+      type = prompt(">> ");
+    }
+  }
 }
-getUserInput();
 
 global.showUserFactors = showUserFactors;
 global.getUserInput = getUserInput;

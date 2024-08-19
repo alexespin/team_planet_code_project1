@@ -1,9 +1,12 @@
+
+// Alex Code
+
 const prompt = require('prompt-sync')();
 
 const gravityFactors = require('./utils/earthGravityFactors.js');
 const alienGravityFactors = require('./utils/alienGravityFactors.js');
 
-function showUserFactors(type, value) {
+function showUserFactors(type, value, system, universe) {
     let results = {};
 
     let measurement;
@@ -30,40 +33,87 @@ function showUserFactors(type, value) {
     }
 
     for (let planet in results) {
-        console.log(`your ${type} on ${planet} is ${results[planet]}${measurement}`)
+        console.log(`your ${type} on ${value} is ${results[planet]}${measurement}`)
     }
 }
 
 function getUserInput() {
-    const validType = ["jump", "weight", "pushup"];
-    let match = false;
+    const validType = ['jump', 'weight', 'pushup'];
+    let isMatch = false;
+    let type;
+    let value;
+    let system;
+    let universe;
 
-    console.log("what type would you like to calculate jump, weight, or pushup");
-    const type = prompt(">> ");
+    while (true) {
+        console.log("what type would you like to calculate jump, weight, or pushup");
+        type = prompt(">> ");
+        type = type.trim().toLowerCase();
 
-    while (match == false) {
-
-        for (let i = 0; i > validType.length - 1; i++) {
-            console.log("work")
+        for (let i = 0; i < validType.length; i++) {
             if (type.trim().toLowerCase() === validType[i]) {
-                console.log(validType[i]);
-                match = true;
-                break;
+                isMatch = true;
             }
         }
-        if (match == true) {
-            console.log(`what is your earth ${type}`);
-            const value = prompt(">> ");
 
-            showUserFactors(type, value);
+        if (isMatch == true) {
+            console.log(`how much ${type}`)
+            value = prompt(">> ")
+            break;
+        } else {
+            console.log("wrong try again.")
         }
-        if (match == false) {
-            console.log("wrong input try again. what type would you like to calculate jump, weight, or pushup");
-            type = prompt(">> ");
-        }
-
     }
+
+    const validType2 = ['metric', 'imperial'];
+    isMatch = false;
+
+    while (true) {
+        if (type == "pushup") {
+            break;
+        }
+
+        console.log("what system would you like to use (metric or imperial)");
+        system = prompt(">> ");
+
+        for (let i = 0; i < validType2.length; i++) {
+            if (system.trim().toLowerCase() === validType2[i]) {
+                isMatch = true;
+            }
+        }
+
+        if (isMatch == true) {
+            console.log(system);
+            break;
+        } else {
+            console.log("wrong input, try again");
+        }
+    }
+
+    const validType3 = ['alien', 'normal'];
+    isMatch = false;
+    while (true) {
+        console.log("what type of planets (alien or normal)");
+        universe = prompt(">> ")
+
+        for (let i = 0; i < validType3.length; i++) {
+            if (universe.trim().toLowerCase() === validType3[i]) {
+                isMatch = true;
+            }
+
+            if (isMatch == true) {
+                showUserFactors(type, value, system, universe);
+            } else {
+                console.log("try again");
+            }
+        }
+    }
+
+
+
 }
 
 global.showUserFactors = showUserFactors;
 global.getUserInput = getUserInput;
+
+getUserInput()

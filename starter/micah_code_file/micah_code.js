@@ -1,59 +1,110 @@
-const prompt = require('prompt-sync')();
-const gravityFactors = require('./utils/earthGravityFactors')
+//Micah's Code
+const prompt = require("prompt-sync")();
+const earthGravityFactors = require("./utils/earthGravityFactors.js");
+const alienGravityFactors = require("./utils/alienGravityFactors.js");
 
-function showUserFactors(type, value) { 
-    let results = {};
-    let measurement;
-    for (let planet in gravityFactors) { 
-        results[planet] = parseFloat((gravityFactors[planet] * value).toFixed(2));
-    }
-    switch (type) { 
-        case "jump":
-            measurement = "cm";
-            break;
-        case "weight":
-            measurement = "kg";
-            break;
-        case "pushups":
-            measurement = "pushups"
-        default:
-            measurement = "units";
-    }
-    for (let planet in results) {
-        console.log(`Your ${type} on ${planet} is ${results[planet]} ${measurement}`);
-    }
+let cl = console.log;
+let ce = console.error;
+
+function showUserFactors(factortype, factorPlanets, factorUnit, factorValue) {
+  cl(
+    `Your ${factorType} is ${factorValue} ${factorUnit} on ${planet} in ${factorPlanets}`
+  );
 }
+
+
 
 function getUserInput() {
-  const validType = ["jump", "weight", "pushup"];
-  let match = false;
-
-  console.log("what type would you like to calculate jump, weight, or pushup");
-  const type = prompt(">> ");
-
-  while (match == false) {
-    for (let i = 0; i > validType.length - 1; i++) {
-      console.log("work");
-      if (type.trim().toLowerCase() === validType[i]) {
-        console.log(validType[i]);
-        match = true;
+  let factorType;
+  let factorSystem;
+  let factorPlanet;
+  let param4;
+  while (true) {
+    let validWords = ["jump", "weight", "push-ups"];
+    console.log("What do you want to measure? jump, weight, or push-ups? This is not case-sensitive.");
+    factorType = prompt(">>").trim().toLowerCase();
+    let isMatch = false;
+    for (let i = 0; i < validWords.length; i++) {
+      if (factorType === validWords[i]) {
+        isMatch = true;
         break;
       }
-    }
-    if (match == true) {
-      console.log(`what is your earth ${type}`);
-      const value = prompt(">> ");
-
-      showUserFactors(type, value);
-    }
-    if (match == false) {
-      console.log(
-        "wrong input try again. what type would you like to calculate jump, weight, or pushup"
-      );
-      type = prompt(">> ");
+    } if (isMatch) {
+      break;
+    } else {
+      ce('ERROR! Restarting...');
     }
   }
-}
-
-global.showUserFactors = showUserFactors;
+  // while (true) {
+  //   console.log("Which planet group would you like to compare? 1(earth), or 2(alien)? Only enter the number.");
+  //   param2 = prompt(">>").trim().toLowerCase();
+  //   if (!isNaN(param2)) {
+  //     switch (param2) {
+  //       case "1":
+  //         factorPlanets = "earthGravityFactors";
+  //         break;
+  //       case "2":
+  //         factorPlanets = "alienGravityFactors";
+  //         break;
+  //       default:
+  //         factorPlanets = "earthGravityFactors";
+  //     }
+  //   }
+  //   break;
+  while (true) {
+    console.log("What Measurement System? 1(metric), or 2(imperial)?");
+    factorSystem = prompt(">>").trim().toLowerCase();
+    if (!isNaN(factorSystem) && 4 > factorSystem > 0) {
+      switch (param2) {
+        case "1":
+          factorSystem = "metric";
+          break;
+        case "2":
+          factorSystem = "imperial";
+          break;
+        default:
+          factorSystem = "metric";
+      }
+          break;
+    } else {
+    ce('ERROR! Restarting...');
+  }
+  } 
+  let factorUnit = "repetitions";
+    if (factorSystem === "metric") {
+      if (factorType === "weight") {
+        factorUnit = "kg"
+      } else if (factorType === "jump") {
+        factorUnit = "cm"
+      } else if (factorType === "push-ups") { 
+        factorUnit = "repititions"
+      }
+    } else if (factorSystem === "imperial") {
+      if (factorType === "weight") {
+        factorUnit = "lbs"
+      } else if (factorType === "jump") {
+        factorUnit = "in"
+      } else if (factorType === "push-ups") { 
+        factorUnit = "repititions"
+      }
+      }
+  while (true) {
+    console.log("e");
+    param3 = prompt(">>").trim().toLowerCase();
+    break;
+    // } else {
+    //   console.error('ERROR! Restarting...');
+    // }
+  }
+  while (true) {
+    console.log("What do you want for param4?");
+    param4 = prompt(">>").trim().toLowerCase();
+    break;
+  } 
+// else { 
+  //   ce('ERROR! Restarting...');
+  // }
+    showUserFactors(factorType, factorSystem, factorUnit, param4);
+  }
 global.getUserInput = getUserInput;
+getUserInput();
